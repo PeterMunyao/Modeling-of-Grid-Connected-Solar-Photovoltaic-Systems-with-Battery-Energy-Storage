@@ -17,7 +17,7 @@ Surplus PV power is exported **only when the battery is fully charged**, thereby
 ## Algorithm Summary
 
 1. **Load** weather and timestamped PV data.  
-2. **Compute** PV output power (DC → AC).  
+2. **Compute** PV output power (DC → AC) using OSM-MEPS code.  
 3. **Compare** PV generation to load → calculate net power.  
 4. **Decision Logic:**  
    - If **PV > load**:  
