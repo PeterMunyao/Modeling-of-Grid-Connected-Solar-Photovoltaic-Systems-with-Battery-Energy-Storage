@@ -38,12 +38,6 @@ Surplus PV power is exported **only when the battery is fully charged**, thereby
 - **Energy balance** and **self-consumption ratio**
 
 
-## Requirements
-
-```bash
-pip install pandas numpy matplotlib
-
-
 ## PV-Battery-Grid Energy Management Simulator
 
 ## Description
@@ -83,4 +77,7 @@ A high-resolution (5-minute) simulation of PV generation, battery dispatch, and 
 
 ```bash
 pip install pandas numpy matplotlib pvlib pytz
+
+```bash
+pip install pandas numpy matplotlib.
 
