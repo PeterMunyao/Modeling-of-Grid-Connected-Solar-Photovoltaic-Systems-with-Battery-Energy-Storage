@@ -70,8 +70,6 @@ A high-resolution (5-minute) simulation of PV generation, battery dispatch, and 
 
 - PV power, load demand, SOC, grid exchange
 - Energy KPIs (PV, import, export, load, SCR)
-- 14 auto-saved plots: daily to yearly views
-- “Strategic hours” shaded visualization
 
 ## Requirements
 
