@@ -108,6 +108,21 @@ The model implements **dynamic load modeling, time-of-use strategies and strateg
 
 ---
 
+# 5-Minute High-Resolution Multi-Segment PV-Battery Self-Consumption & Grid Interaction Simulator
+
+This Python project simulates a **residential PV-battery system** with grid interaction, using high-resolution (5-minute) weather and load data. It calculates power flows, battery operation, and grid import/export while generating professional plots suitable for IEEE-style publications.
+
+## Features
+
+- **Multi-segment PV simulation:** Accounts for tilt, azimuth, temperature, irradiance, cloud cover, and losses.
+- **Realistic residential load profile:** Morning/evening peaks with stochastic variation.
+- **Battery energy management:** Maximum self-consumption strategy with SOC limits.
+- **Grid interaction:** Tracks import/export separately from battery operation.
+- **Energy metrics:** Computes total PV energy, load consumption, grid import/export, self-consumption ratio.
+- **Financial impact:** Estimates annual savings based on electricity costs and export revenue.
+- **High-quality plots:** Power flow and SOC plots with negative spectrum, suitable for reports.
+
+
 ## Requirements
 
 ```bash
