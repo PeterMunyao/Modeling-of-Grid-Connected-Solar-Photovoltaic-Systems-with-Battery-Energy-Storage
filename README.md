@@ -72,8 +72,8 @@ A high-resolution (5-minute) simulation of PV generation, battery dispatch, and 
 # PV-Battery-Grid Energy Management Simulator
 
 ## Description
-A high-resolution (5-minute) Python simulation of **solar PV generation, battery dispatch, and smart grid interaction** under South African 2024 conditions.  
-The model implements **dynamic load modeling, time-of-use strategies, and strategic import/export control** to minimize grid dependency and maximize self-consumption.
+A high-resolution (5-minute) Python simulation of **solar PV generation, battery dispatch** at a premises in durban, South Africa. 
+The model implements **dynamic load modeling, time-of-use strategies and strategic import/export control** to minimize grid dependency and maximize self-consumption.
 
 ---
 
