@@ -46,13 +46,11 @@ A high-resolution (5-minute) simulation of PV generation, battery dispatch, and 
 
 ## Key Features
 
-- Multi-surface PV field modeling (tilt, azimuth, derating)
+- Multi-configuration PV modeling (tilt, azimuth, derating)
 - Realistic load profile with day/night/peak patterns
 - Battery operation under SOC and power constraints
-- Strategic export control between 14:00–21:00
-- Performance KPIs: PV energy, import/export, SOC, SCR
-- Publication-ready Garamond plots (PDF output)
-
+- Strategic export control.
+  
 ## Algorithm Overview
 
 1. **Input Data**: Import 5-min irradiance and weather CSV (2024)
