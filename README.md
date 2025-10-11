@@ -227,5 +227,5 @@ pip install pandas numpy matplotlib pvlib pytz
 pip install pandas numpy matplotlib.
 
 
-![Schematic of Solar PV and BESS system with energy management-CONTROL LOGIC UNIT](images/Schematic_Solar_PV_BESS_system.png)
+![Schematic of Solar PV and BESS system with energy management-Control logic unit](images/Schematic_Solar_PV_BESS_system.png)
 
