@@ -124,22 +124,22 @@ This Python project simulates a **residential PV-battery system** with grid inte
 
 ## MAXIMUM SELF-CONSUMPTION PERFORMANCE SUMMARY
 
--**Total PV Generation:** 146,413 kWh
--**Total Load Consumption:** 92,706 kWh
--**Grid Import:** 11,526 kWh
--**Grid Export:** 59,919 kWh
--**Self-Consumption Ratio:** 87.6%
+- **Total PV Generation:** 146,413 kWh
+- **Total Load Consumption:** 92,706 kWh
+- **Grid Import:** 11,526 kWh
+- **Grid Export:** 59,919 kWh
+- **Self-Consumption Ratio:** 87.6%
 
--**Battery Performance:**
-  -**Energy Charged:** 34,710 kWh
-  -**Energy Discharged:** 29,396 kWh
-  -**Round-trip Efficiency:** 84.7%
+- **Battery Performance:**
+  - **Energy Charged:** 34,710 kWh
+  - **Energy Discharged:** 29,396 kWh
+  - **Round-trip Efficiency:** 84.7%
 
--**Financial Impact (R 3.00/kWh):**
-  -**Import Cost:** R 34,578
-  -**Export Revenue:** R 89,879
-  -**Net Cost:** R -55,302
-  -**Annual Savings:** R 333,418
+- **Financial Impact (R 3.00/kWh):**
+  - **Import Cost:** R 34,578
+  - **Export Revenue:** R 89,879
+  - **Net Cost:** R -55,302
+  - **Annual Savings:** R 333,418
 
 
 ## Requirements
