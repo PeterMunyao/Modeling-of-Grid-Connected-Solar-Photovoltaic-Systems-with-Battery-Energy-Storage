@@ -218,7 +218,7 @@ Let:
   - **Annual Savings:** R 333,418
 
 
-![Schematic of Solar PV and BESS system with energy management-Control logic unit](images/Schematic_Solar_PV_BESS_system.png)
+![Schematic of Solar PV and BESS system with energy management-Control logic unit](Schematic_Solar_PV_BESS_system.png)
 
 
 ## Requirements
