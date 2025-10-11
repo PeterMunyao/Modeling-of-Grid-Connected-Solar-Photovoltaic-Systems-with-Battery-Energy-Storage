@@ -1,3 +1,6 @@
+
+![Schematic of Solar PV and BESS system with energy management-Control logic unit](Schematic_Solar_PV_BESS_system.png)
+
 # PV-Battery-Grid Simulation
 
 **A Python-based simulation of solar PV, battery storage and grid interaction for residential or microgrid applications.**
@@ -216,10 +219,6 @@ Let:
   - **Export Revenue:** R 89,879
   - **Net Cost:** R -55,302
   - **Annual Savings:** R 333,418
-
-
-![Schematic of Solar PV and BESS system with energy management-Control logic unit](Schematic_Solar_PV_BESS_system.png)
-
 
 ## Requirements
 
