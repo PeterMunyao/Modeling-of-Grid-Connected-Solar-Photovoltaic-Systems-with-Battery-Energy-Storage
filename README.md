@@ -128,7 +128,55 @@ This code implements a maximum self-consumption strategy that prioritizes using 
 
 # Algorithm: Maximum Self Consumption
 
-The algorithm first imports 5-minute weather data (DNI, GHI, DHI, air temperature, albedo, zenith, azimuth, cloud opacity, humidity, wind speed) and generates a realistic residential load profile where load varies by hour with added Gaussian noise, clipped to [base, peak] values. PV power is computed per segment by calculating the angle of incidence (AOI = arccos(cos(θ_zenith)*cos(θ_tilt) + sin(θ_zenith)*sin(θ_tilt)*cos(φ_sun - φ_tilt))) and total plane-of-array irradiance (POA_total = POA_direct + POA_diffuse + POA_reflected), which is converted to temperature-corrected DC power and then AC power (P_AC = P_DC * inverter_efficiency * losses), summing all segments to obtain total PV output. At each timestep, the power balance is calculated as PV minus load; if power_balance < 0 and battery SOC > SOC_min, the battery discharges (up to min(-power_balance, max_discharge, (SOC - SOC_min)/efficiency/dt)) and supplies the load; elif power_balance > 0 and SOC < SOC_max, the battery charges (up to min(power_balance, max_charge, (SOC_max - SOC)/efficiency/dt)); remaining imbalance is exported to or imported from the grid. Energy metrics are computed as total PV generation, load consumption, grid import/export, self-consumption ratio ((E_load - E_grid_import)/E_load), battery charge/discharge energy, and round-trip efficiency. Financial metrics are calculated as Import_Cost = E_grid_import*3.0, Export_Revenue = E_grid_export*1.5, Net_Cost = Import_Cost - Export_Revenue, and Annual_Savings = E_load*3.0 - Net_Cost. Finally, visualization is performed for daily, weekly, and yearly timelines, plotting PV, load, battery charging/discharging, grid flows, and battery SOC, with negative spectrum representation for discharging and import.
+# MAXIMUM SELF-CONSUMPTION CONTROL ALGORITHM
+# ===========================================
+
+INPUTS:
+    PV_power, Load_power, Battery_SOC
+    SOC_min, SOC_max, Battery_capacity
+    Max_charge_rate, Max_discharge_rate
+    Battery_efficiency, Time_step
+
+OUTPUTS:
+    Grid_power, Battery_power, Updated_SOC
+
+ALGORITHM:
+    Power_balance = PV_power - Load_power
+    
+    IF Power_balance < 0 AND Battery_SOC > SOC_min:
+        # MODE 1: BATTERY DISCHARGE TO SUPPLY LOAD
+        Power_needed = -Power_balance
+        Energy_available = (Battery_SOC - SOC_min) * Battery_efficiency
+        Max_discharge_power = min(Max_discharge_rate, Energy_available / Time_step)
+        Discharge_power = min(Power_needed, Max_discharge_power)
+        
+        Battery_SOC = Battery_SOC - (Discharge_power * Time_step / Battery_efficiency)
+        Battery_power = -Discharge_power
+        Grid_power = Power_balance + Discharge_power
+        
+    ELSE IF Power_balance > 0 AND Battery_SOC < SOC_max:
+        # MODE 2: BATTERY CHARGE FROM EXCESS PV
+        Available_capacity = (SOC_max - Battery_SOC) / Battery_efficiency
+        Max_charge_power = min(Max_charge_rate, Available_capacity / Time_step)
+        Charge_power = min(Power_balance, Max_charge_power)
+        
+        Battery_SOC = Battery_SOC + (Charge_power * Time_step * Battery_efficiency)
+        Battery_power = Charge_power
+        Grid_power = Power_balance - Charge_power
+        
+    ELSE:
+        # MODE 3: DIRECT GRID INTERACTION
+        Battery_power = 0
+        Grid_power = Power_balance
+
+PERFORMANCE METRICS:
+    Self_consumption_ratio = (Total_load_energy - Grid_import_energy) / Total_load_energy
+    Round_trip_efficiency = Total_discharge_energy / Total_charge_energy
+    
+FINANCIAL METRICS:
+    Import_cost = Grid_import_energy * 3.0
+    Export_revenue = Grid_export_energy * 1.5
+    Annual_savings = (Total_load_energy * 3.0) - (Import_cost - Export_revenue)
 
 ## Financial Impact of PV + Battery System
 
