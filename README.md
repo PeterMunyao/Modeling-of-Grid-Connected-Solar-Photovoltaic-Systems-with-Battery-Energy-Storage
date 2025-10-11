@@ -110,17 +110,38 @@ The model implements **dynamic load modeling, time-of-use strategies and strateg
 
 # 5-Minute High-Resolution Multi-Segment PV-Battery Self-Consumption & Grid Interaction Simulator
 
-This Python project simulates a **residential PV-battery system** with grid interaction, using high-resolution (5-minute) weather and load data. It calculates power flows, battery operation, and grid import/export while generating professional plots suitable for IEEE-style publications.
+This Python project simulates a **residential PV-battery system** with grid interaction, using high-resolution (5-minute) weather and load data. It calculates power flows, battery operation and grid import/export.
 
 ## Features
 
-- **Multi-segment PV simulation:** Accounts for tilt, azimuth, temperature, irradiance, cloud cover, and losses.
+- **Multi-segment PV modeling and simulation:** Accounts for tilt, azimuth, temperature, irradiance, cloud cover, and losses.
 - **Realistic residential load profile:** Morning/evening peaks with stochastic variation.
 - **Battery energy management:** Maximum self-consumption strategy with SOC limits.
 - **Grid interaction:** Tracks import/export separately from battery operation.
 - **Energy metrics:** Computes total PV energy, load consumption, grid import/export, self-consumption ratio.
 - **Financial impact:** Estimates annual savings based on electricity costs and export revenue.
 - **High-quality plots:** Power flow and SOC plots with negative spectrum, suitable for reports.
+
+## MAXIMUM SELF-CONSUMPTION PERFORMANCE SUMMARY
+
+======================================================================
+
+#Total PV Generation: 146,413 kWh
+#Total Load Consumption: 92,706 kWh
+#Grid Import: 11,526 kWh
+#Grid Export: 59,919 kWh
+#Self-Consumption Ratio: 87.6%
+
+#Battery Performance:
+  #Energy Charged: 34,710 kWh
+  #Energy Discharged: 29,396 kWh
+  #Round-trip Efficiency: 84.7%
+
+#Financial Impact (R 3.00/kWh):
+  #Import Cost: R 34,578
+  #Export Revenue: R 89,879
+  #Net Cost: R -55,302
+  #Annual Savings: R 333,418
 
 
 ## Requirements
@@ -130,4 +151,5 @@ pip install pandas numpy matplotlib pvlib pytz
 
 ```bash
 pip install pandas numpy matplotlib.
+
 
