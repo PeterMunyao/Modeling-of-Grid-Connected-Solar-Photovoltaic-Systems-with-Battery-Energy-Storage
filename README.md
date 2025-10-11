@@ -7,11 +7,11 @@ Surplus PV power is exported **only when the battery is fully charged**, thereby
 
 ## Features
 
-- 📥 Imports irradiance data (GHI, DNI, DHI) and computes PV generation.  
-- ⚡ Implements **battery-first logic**: PV charges the battery before exporting to grid.  
-- 🔁 Balances power among **PV, load, battery, and grid** with SOC (State of Charge) constraints.  
-- 📊 Visualizes **PV generation**, **battery SOC**, and **grid imports/exports**.  
-- 🗓️ Supports **full-year** or **daily** performance visualization.
+- Imports irradiance data (GHI, DNI, DHI) and computes PV generation.  
+- Implements **battery-first logic**: PV charges the battery before exporting to grid.  
+- Balances power among **PV, load, battery, and grid** with SOC (State of Charge) constraints.  
+- Visualizes **PV generation**, **battery SOC**, and **grid imports/exports**.  
+- Supports **full-year** or **daily** performance visualization.
 
 
 ## Algorithm Summary
