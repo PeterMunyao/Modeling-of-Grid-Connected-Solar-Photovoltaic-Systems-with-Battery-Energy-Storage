@@ -140,30 +140,22 @@ Let:
 
 ### Equations
 
+
 1. **Cost of imported electricity**:  
-\[
-\text{Import Cost} = E_\text{import} \times 3.00
-\]
+   Import Cost = E_import × 3.00  
 
 2. **Revenue from exported electricity**:  
-\[
-\text{Export Revenue} = E_\text{export} \times 1.50
-\]
+   Export Revenue = E_export × 1.50  
 
 3. **Net cost of electricity with PV + Battery**:  
-\[
-\text{Net Cost} = \text{Import Cost} - \text{Export Revenue}
-\]
+   Net Cost = Import Cost − Export Revenue  
 
 4. **Cost without PV + Battery system**:  
-\[
-\text{Cost without system} = E_\text{load} \times 3.00
-\]
+   Cost without system = E_load × 3.00  
 
 5. **Annual savings**:  
-\[
-\text{Savings} = \text{Cost without system} - \text{Net Cost}
-\]
+   Savings = Cost without system − Net Cost  
+
 
 - **Total PV Generation:** 146,413 kWh
 - **Total Load Consumption:** 92,706 kWh
