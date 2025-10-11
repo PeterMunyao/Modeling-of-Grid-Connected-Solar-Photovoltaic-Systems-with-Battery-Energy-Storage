@@ -128,8 +128,6 @@ This code implements a maximum self-consumption strategy that prioritizes using 
 
 # Algorithm: Maximum Self Consumption
 
-# MAXIMUM SELF-CONSUMPTION CONTROL ALGORITHM
-
 INPUTS:
     *PV_power, Load_power, Battery_SOC*
     *SOC_min, SOC_max, Battery_capacity*
