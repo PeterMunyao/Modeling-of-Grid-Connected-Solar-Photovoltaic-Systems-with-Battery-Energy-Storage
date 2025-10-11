@@ -1,4 +1,4 @@
-## PV-Battery-Grid Simulation
+# PV-Battery-Grid Simulation
 
 **A Python-based simulation of solar PV, battery storage and grid interaction for residential or microgrid applications.**
 
@@ -198,7 +198,7 @@ Let:
 5. **Annual savings**:  
    Savings = Cost without system − Net Cost  
 
-## SCENARIO CASE STUDY RESULTS 
+### SCENARIO CASE STUDY RESULTS 
 
 - **Total PV Generation:** 146,413 kWh
 - **Total Load Consumption:** 92,706 kWh
