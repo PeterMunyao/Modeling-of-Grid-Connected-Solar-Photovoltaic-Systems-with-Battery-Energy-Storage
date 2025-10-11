@@ -166,15 +166,6 @@ ALGORITHM:
         Battery_power = 0
         Grid_power = Power_balance
 
-PERFORMANCE METRICS:
-    Self_consumption_ratio = (Total_load_energy - Grid_import_energy) / Total_load_energy
-    Round_trip_efficiency = Total_discharge_energy / Total_charge_energy
-    
-FINANCIAL METRICS:
-    Import_cost = Grid_import_energy * 3.0
-    Export_revenue = Grid_export_energy * 1.5
-    Annual_savings = (Total_load_energy * 3.0) - (Import_cost - Export_revenue)
-
 ## Financial Impact of PV + Battery System
 
 This section calculates the financial benefit of using the PV + Battery system compared to relying entirely on grid electricity.  
