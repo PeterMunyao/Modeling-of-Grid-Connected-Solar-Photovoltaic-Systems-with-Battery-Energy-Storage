@@ -141,7 +141,7 @@ OUTPUTS:
     Grid_power, Battery_power, Updated_SOC
 
 ALGORITHM:
-    Power_balance = PV_power - Load_power
+    *Power_balance = PV_power - Load_power*
     
     IF Power_balance < 0 AND Battery_SOC > SOC_min:
         # MODE 1: BATTERY DISCHARGE TO SUPPLY LOAD
