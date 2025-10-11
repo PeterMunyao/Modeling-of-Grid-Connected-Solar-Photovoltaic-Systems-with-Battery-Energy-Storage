@@ -124,6 +124,47 @@ This Python project simulates a **residential PV-battery system** with grid inte
 
 ## MAXIMUM SELF-CONSUMPTION PERFORMANCE SUMMARY
 
+## Financial Impact of PV + Battery System
+
+This section calculates the financial benefit of using the PV + Battery system compared to relying entirely on grid electricity.  
+
+Assumptions:  
+- Grid electricity import cost: **R 3.00 per kWh**  
+- Grid electricity export revenue: **R 1.50 per kWh**  
+
+Let:
+
+- `E_import` = Total energy imported from the grid (kWh)  
+- `E_export` = Total energy exported to the grid (kWh)  
+- `E_load` = Total household load energy (kWh)  
+
+### Equations
+
+1. **Cost of imported electricity**:  
+\[
+\text{Import Cost} = E_\text{import} \times 3.00
+\]
+
+2. **Revenue from exported electricity**:  
+\[
+\text{Export Revenue} = E_\text{export} \times 1.50
+\]
+
+3. **Net cost of electricity with PV + Battery**:  
+\[
+\text{Net Cost} = \text{Import Cost} - \text{Export Revenue}
+\]
+
+4. **Cost without PV + Battery system**:  
+\[
+\text{Cost without system} = E_\text{load} \times 3.00
+\]
+
+5. **Annual savings**:  
+\[
+\text{Savings} = \text{Cost without system} - \text{Net Cost}
+\]
+
 - **Total PV Generation:** 146,413 kWh
 - **Total Load Consumption:** 92,706 kWh
 - **Grid Import:** 11,526 kWh
