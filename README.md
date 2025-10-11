@@ -132,13 +132,13 @@ This code implements a maximum self-consumption strategy that prioritizes using 
 # ===========================================
 
 INPUTS:
-    PV_power, Load_power, Battery_SOC
-    SOC_min, SOC_max, Battery_capacity
-    Max_charge_rate, Max_discharge_rate
-    Battery_efficiency, Time_step
+    *PV_power, Load_power, Battery_SOC*
+    *SOC_min, SOC_max, Battery_capacity*
+    *Max_charge_rate, Max_discharge_rate*
+    *Battery_efficiency, Time_step*
 
 OUTPUTS:
-    Grid_power, Battery_power, Updated_SOC
+    *Grid_power, Battery_power, Updated_SOC*
 
 ALGORITHM:
     *Power_balance = PV_power - Load_power*
