@@ -218,6 +218,9 @@ Let:
   - **Annual Savings:** R 333,418
 
 
+![Schematic of Solar PV and BESS system with energy management-Control logic unit](images/Schematic_Solar_PV_BESS_system.png)
+
+
 ## Requirements
 
 ```bash
@@ -226,6 +229,4 @@ pip install pandas numpy matplotlib pvlib pytz
 ```bash
 pip install pandas numpy matplotlib.
 
-
-![Schematic of Solar PV and BESS system with energy management-Control logic unit](images/Schematic_Solar_PV_BESS_system.png)
 
