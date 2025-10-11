@@ -124,6 +124,9 @@ This Python project simulates a **residential PV-battery system** with grid inte
 
 ## MAXIMUM SELF-CONSUMPTION PERFORMANCE SUMMARY
 
+This code implements a maximum self-consumption strategy that prioritizes using solar energy on-site rather than exporting to the grid. The algorithm follows a strict operational sequence: first, the battery discharges to power home loads whenever solar generation is insufficient; second, any excess solar energy charges the battery for later use; and only as a last resort does the system import from the grid. Critically, the system eliminates strategic grid export - unlike previous versions that discharged batteries to the grid during peak hours for revenue, this configuration reserves all stored energy exclusively for self-consumption. The financial benefits are calculated as savings that would otherwise be incurred from consuming grid energy for most of the load profile. The battery parameters are optimized for this purpose with 92% efficiency and conservative state-of-charge limits (15-90%) to maximize lifetime performance. 
+
+
 ## Financial Impact of PV + Battery System
 
 This section calculates the financial benefit of using the PV + Battery system compared to relying entirely on grid electricity.  
