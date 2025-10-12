@@ -616,7 +616,7 @@ print("- Battery state of charge dynamics")
 
 
 
-# === COST SAVINGS CALCULATION ===
+# === CORRECTED COST SAVINGS CALCULATION ===
 import_cost = 3.00           # R per kWh - buying from grid
 standard_export_rate = 0.70  # R per kWh - selling to grid (normal)
 peak_export_premium = 0.80   # R per kWh - bonus for peak exports
@@ -631,7 +631,7 @@ print(f"Peak Export Rate: R {peak_export_rate:.2f} per kWh")
 
 # 1. Direct savings from PV self-consumption
 pv_self_consumption = total_load_energy - grid_import_energy
-direct_savings = pv_self_consumption * import_cost  # Using import_cost for savings
+direct_savings = pv_self_consumption * import_cost
 
 print(f"\n1. DIRECT SAVINGS FROM PV SELF-CONSUMPTION:")
 print(f"   Total PV Generation: {total_pv_energy:,.0f} kWh")
@@ -640,53 +640,55 @@ print(f"   Grid Import: {grid_import_energy:,.0f} kWh")
 print(f"   PV Self-Consumption: {pv_self_consumption:,.0f} kWh")
 print(f"   Direct Savings: R {direct_savings:,.0f}")
 
-# 2. Revenue from grid exports (standard rate only)
-standard_export_revenue = grid_export_energy * standard_export_rate
-
-print(f"\n2. REVENUE FROM GRID EXPORTS (Standard Rate):")
-print(f"   Grid Export: {grid_export_energy:,.0f} kWh")
-print(f"   Export Revenue: R {standard_export_revenue:,.0f}")
-
-# 3. Strategic export premium (higher rates during peak)
+# 2. Revenue from grid exports (with peak/standard differentiation)
+standard_export_energy = grid_export_energy - strategic_export_energy
+standard_export_revenue = standard_export_energy * standard_export_rate
 strategic_export_revenue = strategic_export_energy * peak_export_rate
-total_standard_export_revenue = (grid_export_energy - strategic_export_energy) * standard_export_rate
-total_export_revenue = strategic_export_revenue + total_standard_export_revenue
+total_export_revenue = standard_export_revenue + strategic_export_revenue
 
-print(f"\n3. STRATEGIC EXPORT REVENUE (Peak Premium):")
-print(f"   Strategic Export: {strategic_export_energy:.1f} kWh")
-print(f"   Peak Export Rate: R {peak_export_rate:.2f} per kWh")
-print(f"   Strategic Export Revenue: R {strategic_export_revenue:,.0f}")
+print(f"\n2. REVENUE FROM GRID EXPORTS:")
+print(f"   Total Grid Export: {grid_export_energy:,.0f} kWh")
+print(f"   - Standard Export: {standard_export_energy:,.0f} kWh @ R {standard_export_rate:.2f}/kWh")
+print(f"   - Strategic Export: {strategic_export_energy:,.0f} kWh @ R {peak_export_rate:.2f}/kWh")
+print(f"   Total Export Revenue: R {total_export_revenue:,.0f}")
 
-# 4. Avoided import costs (what we would have paid without PV)
-avoided_import_cost = total_pv_energy * import_cost  # Using import_cost
+# 3. Total financial benefits
+total_benefits = direct_savings + total_export_revenue
 
-print(f"\n4. AVOIDED IMPORT COSTS (Without PV System):")
-print(f"   Without PV, would import: {total_pv_energy:,.0f} kWh")
-print(f"   Avoided Import Cost: R {avoided_import_cost:,.0f}")
+print(f"\n3. TOTAL FINANCIAL BENEFITS:")
+print(f"   Direct Savings from Self-Consumption: R {direct_savings:,.0f}")
+print(f"   Revenue from Grid Exports: R {total_export_revenue:,.0f}")
+print(f"   TOTAL BENEFITS: R {total_benefits:,.0f}")
 
-# 5. Net financial benefit
-total_benefit = direct_savings + total_export_revenue
-cost_of_imports = grid_import_energy * import_cost  # Using import_cost
-net_annual_benefit = total_benefit - cost_of_imports
+# 4. Cost of grid imports
+cost_of_imports = grid_import_energy * import_cost
 
-print(f"\n5. NET FINANCIAL BENEFIT:")
-print(f"   Total Benefit (Savings + Revenue): R {total_benefit:,.0f}")
-print(f"   Cost of Grid Imports: R {cost_of_imports:,.0f}")
+print(f"\n4. COST OF GRID IMPORTS:")
+print(f"   Grid Import Energy: {grid_import_energy:,.0f} kWh")
+print(f"   Cost of Imports: R {cost_of_imports:,.0f}")
+
+# 5. NET ANNUAL BENEFIT (Corrected - this is the key metric)
+net_annual_benefit = total_benefits - cost_of_imports
+
+print(f"\n5. NET ANNUAL BENEFIT:")
+print(f"   Total Benefits: R {total_benefits:,.0f}")
+print(f"   Less: Cost of Imports: R {cost_of_imports:,.0f}")
 print(f"   NET ANNUAL BENEFIT: R {net_annual_benefit:,.0f}")
 
-# 6. Cost comparison with and without PV
-cost_with_pv = grid_import_energy * import_cost  # Using import_cost
-cost_without_pv = total_load_energy * import_cost  # Using import_cost
-annual_savings = cost_without_pv - cost_with_pv + total_export_revenue  # Using total_export_revenue
+# 6. Cost comparison with and without PV system (Corrected)
+cost_with_pv = cost_of_imports
+cost_without_pv = total_load_energy * import_cost
+annual_savings_vs_no_pv = cost_without_pv - cost_with_pv + total_export_revenue
 
 print(f"\n6. ANNUAL COST COMPARISON:")
-print(f"   With PV System: R {cost_with_pv:,.0f} (import costs only)")
-print(f"   Without PV System: R {cost_without_pv:,.0f} (import all energy)")
-print(f"   ANNUAL SAVINGS: R {annual_savings:,.0f}")
+print(f"   With PV System: R {cost_with_pv:,.0f} (import costs)")
+print(f"   Without PV System: R {cost_without_pv:,.0f} (import all load)")
+print(f"   Export Revenue: R {total_export_revenue:,.0f}")
+print(f"   ANNUAL SAVINGS vs No PV: R {annual_savings_vs_no_pv:,.0f}")
 
-# 7. PV generation financial value
-self_consumption_value = pv_self_consumption * import_cost  # Using import_cost
-export_value = total_export_revenue  # Already calculated with proper rates
+# 7. PV generation financial value (Corrected)
+self_consumption_value = pv_self_consumption * import_cost
+export_value = total_export_revenue
 total_pv_value = self_consumption_value + export_value
 
 print(f"\n7. PV GENERATION FINANCIAL VALUE:")
@@ -694,22 +696,33 @@ print(f"   Self-Consumption Value: R {self_consumption_value:,.0f}")
 print(f"   Export Value: R {export_value:,.0f}")
 print(f"   TOTAL PV VALUE: R {total_pv_value:,.0f}")
 
-# 8. Return on Investment calculation (simplified)
+# 8. Return on Investment calculation (using NET annual benefit)
 system_cost_estimate = 800000  # R 800,000 estimated system cost
-simple_payback_years = system_cost_estimate / annual_savings
+simple_payback_years = system_cost_estimate / net_annual_benefit
+annual_roi = (net_annual_benefit / system_cost_estimate) * 100
 
-print(f"\n8. RETURN ON INVESTMENT (ESTIMATE):")
+print(f"\n8. RETURN ON INVESTMENT (CORRECTED):")
 print(f"   Estimated System Cost: R {system_cost_estimate:,.0f}")
-print(f"   Annual Savings: R {annual_savings:,.0f}")
+print(f"   Net Annual Benefit: R {net_annual_benefit:,.0f}")
 print(f"   Simple Payback Period: {simple_payback_years:.1f} years")
-print(f"   Annual ROI: {(annual_savings/system_cost_estimate)*100:.1f}%")
+print(f"   Annual ROI: {annual_roi:.1f}%")
 
-# 9. Monthly breakdown
-print(f"\n9. MONTHLY BREAKDOWN:")
+# 9. System utilization metrics
+pv_self_consumption_ratio = pv_self_consumption / total_pv_energy
+pv_export_ratio = grid_export_energy / total_pv_energy
+pv_curtailed_ratio = 1 - pv_self_consumption_ratio - pv_export_ratio
+
+print(f"\n9. SYSTEM UTILIZATION METRICS:")
+print(f"   PV Self-Consumption Ratio: {pv_self_consumption_ratio:.1%}")
+print(f"   PV Export Ratio: {pv_export_ratio:.1%}")
+print(f"   PV Curtailed/Other: {pv_curtailed_ratio:.1%}")
+
+# 10. Monthly breakdown (Corrected - use proper export rates)
+print(f"\n10. MONTHLY BREAKDOWN:")
 months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
           'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
-monthly_savings = []
+monthly_benefits = []
 for i, month in enumerate(months, 1):
     if i == 12:
         month_data = df[(df.index >= f'2024-{i:02d}-01') & (df.index < '2025-01-01')]
@@ -722,17 +735,24 @@ for i, month in enumerate(months, 1):
         month_import = abs(month_data[month_data['Grid_Power_KW'] < 0]['Grid_Power_KW'].sum() * dt)
         month_export = month_data[month_data['Grid_Power_KW'] > 0]['Grid_Power_KW'].sum() * dt
         
-        month_self_consumption = month_load - month_import
-        # Using proper rates for monthly calculation
-        month_savings = (month_self_consumption * import_cost) + (month_export * standard_export_rate)
-        monthly_savings.append(month_savings)
+        # Estimate strategic vs standard export (simplified - assume 36.3% strategic based on annual ratio)
+        month_strategic_export = month_export * (strategic_export_energy / grid_export_energy)
+        month_standard_export = month_export - month_strategic_export
         
-        print(f"   {month}: R {month_savings:,.0f} (PV: {month_pv:.0f}kWh, Export: {month_export:.0f}kWh)")
+        month_self_consumption = month_load - month_import
+        month_direct_savings = month_self_consumption * import_cost
+        month_export_revenue = (month_standard_export * standard_export_rate) + (month_strategic_export * peak_export_rate)
+        month_total_benefits = month_direct_savings + month_export_revenue
+        month_cost_imports = month_import * import_cost
+        month_net_benefit = month_total_benefits - month_cost_imports
+        
+        monthly_benefits.append(month_net_benefit)
+        
+        print(f"   {month}: R {month_net_benefit:,.0f} (PV: {month_pv:.0f}kWh, Export: {month_export:.0f}kWh)")
 
-print(f"\n   Average Monthly Savings: R {np.mean(monthly_savings):,.0f}")
+print(f"\n   Average Monthly Net Benefit: R {np.mean(monthly_benefits):,.0f}")
 
 print("\n" + "="*60)
-print("SUMMARY: You are saving approximately R {:,} per year".format(int(annual_savings)))
-print("by consuming from your PV generation instead of importing all electricity!")
+print("SUMMARY: The PV system provides a net annual benefit of R {:,}".format(int(net_annual_benefit)))
+print("after accounting for all import costs and export revenues.")
 print("="*60)
-
