@@ -224,8 +224,12 @@ Let:
   - **Net Cost:** R -55,302
   - **Annual Savings:** R 333,418
 
+<p align="center">
+  <img src="BatteryReconfigurationFor_fast_charging.png" alt="Schematic of Battery Reconfiguration For Fast Charging" width="600">
+  <br>
+  <em>Figure 2: Schematic of battery reconfiguration for fast charging.</em>
+</p>
 
-![Schematic of Battery Reconfiguration For Fast_Charging](BatteryReconfigurationFor_fast_charging.png)
 
 
 ## Requirements
