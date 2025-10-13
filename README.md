@@ -1,5 +1,9 @@
+<p align="center">
+  <img src="Schematic_Solar_PV_BESS_system.png" alt="Schematic of Solar PV and BESS system with energy management-Control logic unit" width="600"/>
+  <br>
+  <em>Figure 1: Schematic of Solar PV and BESS system with energy management-control logic unit.</em>
+</p>
 
-![Schematic of Solar PV and BESS system with energy management-Control logic unit](Schematic_Solar_PV_BESS_system.png)
 
 # PV-Battery-Grid Simulation
 
