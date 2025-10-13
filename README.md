@@ -220,6 +220,10 @@ Let:
   - **Net Cost:** R -55,302
   - **Annual Savings:** R 333,418
 
+
+![Schematic of Solar PV and BESS system with energy management-Control logic unit]()
+
+
 ## Requirements
 
 ```bash
