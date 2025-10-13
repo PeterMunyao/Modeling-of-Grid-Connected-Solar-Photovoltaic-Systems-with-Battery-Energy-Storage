@@ -221,7 +221,7 @@ Let:
   - **Annual Savings:** R 333,418
 
 
-![Schematic of Solar PV and BESS system with energy management-Control logic unit]()
+![Schematic of Battery Reconfiguration For Fast_Charging](BatteryReconfigurationFor_fast_charging.png)
 
 
 ## Requirements
