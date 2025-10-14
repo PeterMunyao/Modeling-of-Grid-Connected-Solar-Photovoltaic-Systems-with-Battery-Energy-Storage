@@ -225,9 +225,9 @@ Let:
   - **Annual Savings:** R 333,418
 
 <p align="center">
-  <img src="BatteryReconfigurationFor_fast_charging.png" alt="Schematic of Battery Reconfiguration For Fast Charging (Parallel connection absorbs more current from solar PV during high irradiance and avoids charge limits curtailment" width="600">
+  <img src="BatteryReconfigurationFor_fast_charging.png" alt="Schematic of Battery Reconfiguration For Fast Charging" width="600">
   <br>
-  <em>Figure 2: Schematic of battery reconfiguration for fast charging.</em>
+  <em>Figure 2: Schematic of battery reconfiguration for fast charging (Parallel connection absorbs more current from solar PV during high irradiance and avoids charge limits curtailment).</em>
 </p>
 
 
