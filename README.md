@@ -82,8 +82,6 @@ A high-resolution (5-minute) simulation of PV generation, battery dispatch, and 
 A high-resolution (5-minute) Python simulation of **solar PV generation, battery dispatch** at a premises in durban, South Africa. 
 The model implements **dynamic load modeling, time-of-use strategies and strategic import/export control** to minimize grid dependency and maximize self-consumption.
 
----
-
 ## Key Features
 - Multi-surface PV field modeling (tilt, azimuth, derating).
 - Realistic load profile with **day/night/peak patterns**.
@@ -91,8 +89,6 @@ The model implements **dynamic load modeling, time-of-use strategies and strateg
 - **Strategic export control** between 18:00–21:00.
 - Performance KPIs: PV energy, import/export, SOC, SCR.
 - Publication-ready Garamond plots (PDF output).
-
----
 
 ## Algorithm Overview
 1. **Input Data**: Import 5-min irradiance and weather CSV (2024).
@@ -105,15 +101,12 @@ The model implements **dynamic load modeling, time-of-use strategies and strateg
 5. **Grid Interaction**: Import/export according to SOC and thresholds.
 6. **Visualization**: Plot daily/weekly/yearly PV, load, SOC, and grid flow.
 
----
 
 ## Outputs
 - PV power, load demand, SOC, grid exchange
 - Energy KPIs (PV, import, export, load, SCR)
 - 14 auto-saved plots: daily to yearly views
 - “Strategic hours” shaded visualization
-
----
 
 # 5-Minute High-Resolution Multi-Segment PV-Battery Self-Consumption & Grid Interaction Simulator
 
@@ -227,7 +220,7 @@ Let:
 <p align="center">
   <img src="BatteryReconfigurationFor_fast_charging.png" alt="Schematic of Battery Reconfiguration For Fast Charging" width="600">
   <br>
-  <em>Figure 2: Schematic of battery reconfiguration for fast charging (Parallel connection absorbs more current from solar PV during high irradiance and avoids charge limits curtailment).</em>
+  <em>Figure 2: Schematic of battery reconfiguration for fast charging (Parallel connection absorbs more current from solar PV during high irradiance and avoids charge limits related energy curtailment).</em>
 </p>
 
 
