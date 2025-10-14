@@ -220,7 +220,7 @@ Let:
 <p align="center">
   <img src="BatteryReconfigurationFor_fast_charging.png" alt="Schematic of Battery Reconfiguration For Fast Charging" width="600">
   <br>
-  <em>Figure 2: Schematic of battery reconfiguration for fast charging (Parallel connection absorbs more current from solar PV during high irradiance and avoids charge limits related energy curtailment).</em>
+  <em>Figure 2: Schematic illustrating battery reconfiguration for fast charging (Parallel connection absorbs more current from solar PV during high irradiance and avoids charge limits related energy curtailment).</em>
 </p>
 
 
