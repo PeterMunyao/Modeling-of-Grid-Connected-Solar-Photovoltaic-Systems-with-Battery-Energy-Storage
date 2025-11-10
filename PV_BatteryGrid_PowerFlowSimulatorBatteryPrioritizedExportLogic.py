@@ -787,33 +787,34 @@ if len(full_year_data) > 0:
     filename = "full_year_battery_modes_ieee_markers_only"
     fig = create_ieee_battery_modes_plot_full_year_markers_only(full_year_data, "Full Year 2024", filename)
     plt.show()
+  
+
+# === GRID DISCHARGE DETAILED ANALYSIS ===
+grid_discharge = full_year_data[full_year_data['Battery_Mode'] == 'Discharging to Grid']
+if len(grid_discharge) > 0:
+    print(f"\n=== GRID DISCHARGE DETAILED ANALYSIS ===")
+    print(f"Total grid discharge energy: {abs(grid_discharge['Battery_Power_kW'].sum() * (5/60)):.2f} kWh")
     
-    # Print mode statistics
-    print("\nBattery Mode Statistics for Full Year 2024:")
-    mode_counts = full_year_data['Battery_Mode'].value_counts()
-    for mode, count in mode_counts.items():
-        percentage = (count / len(full_year_data)) * 100
-        hours = count * (5/60)
-        print(f"  {mode}: {count} intervals ({percentage:.3f}%) = {hours:.2f} hours")
+    # CORRECTED POWER CALCULATIONS:
+    # For discharge, battery power should be NEGATIVE, so we look for the most negative value
+    discharge_power_values = grid_discharge['Battery_Power_kW']
     
-    # Detailed grid discharge analysis
-    grid_discharge = full_year_data[full_year_data['Battery_Mode'] == 'Discharging to Grid']
-    if len(grid_discharge) > 0:
-        print(f"\n=== GRID DISCHARGE DETAILED ANALYSIS ===")
-        print(f"Total grid discharge energy: {abs(grid_discharge['Battery_Power_kW'].sum() * (5/60)):.2f} kWh")
-        print(f"Average discharge power: {abs(grid_discharge['Battery_Power_kW'].mean()):.2f} kW")
-        print(f"Maximum discharge power: {abs(grid_discharge['Battery_Power_kW'].max()):.2f} kW")
-        
-        # Monthly breakdown of grid discharge
-        print(f"\nGrid discharge by month:")
-        for month in range(1, 13):
-            month_data = grid_discharge[grid_discharge.index.month == month]
-            if len(month_data) > 0:
-                energy = abs(month_data['Battery_Power_kW'].sum() * (5/60))
-                print(f"  Month {month}: {len(month_data)} intervals, {energy:.2f} kWh")
-        
-else:
-    print("ERROR: No data found for full year 2024!")
+    # Maximum discharge power (most negative value converted to positive)
+    max_discharge_power = abs(discharge_power_values.min())
+    
+    # Average discharge power (mean of absolute values of negative powers)
+    avg_discharge_power = abs(discharge_power_values[discharge_power_values < 0].mean())
+    
+    print(f"Average discharge power: {avg_discharge_power:.2f} kW")
+    print(f"Maximum discharge power: {max_discharge_power:.2f} kW")
+    
+    # Monthly breakdown of grid discharge
+    print(f"\nGrid discharge by month:")
+    for month in range(1, 13):
+        month_data = grid_discharge[grid_discharge.index.month == month]
+        if len(month_data) > 0:
+            energy = abs(month_data['Battery_Power_kW'].sum() * (5/60))
+            print(f"  Month {month}: {len(month_data)} intervals, {energy:.2f} kWh")
 
 print("\nFull year IEEE battery modes plot (markers only) saved as PDF file.")
 print("File created: full_year_battery_modes_ieee_markers_only.pdf")
