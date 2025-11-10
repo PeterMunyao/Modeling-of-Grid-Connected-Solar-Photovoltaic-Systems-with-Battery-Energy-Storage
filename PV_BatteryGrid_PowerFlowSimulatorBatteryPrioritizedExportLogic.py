@@ -821,5 +821,94 @@ print("File created: full_year_battery_modes_ieee_markers_only.pdf")
 
 #----------------------------------------------------------------------------------------
 
+# === ANALYZE BATTERY DISCHARGE AT 16:30 HOURS ===
+print("\n" + "="*60)
+print("ANALYZING BATTERY DISCHARGE AT 16:30 HOURS")
+print("="*60)
 
+# Find maximum discharge event details
+max_discharge_time = grid_discharge['Battery_Power_kW'].idxmin()
+max_discharge_power = abs(grid_discharge['Battery_Power_kW'].min())
+
+print(f"Maximum discharge event time: {max_discharge_time}")
+print(f"Maximum discharge power: {max_discharge_power:.2f} kW")
+
+# Check if the max event occurred around 16:30
+max_event_hour = max_discharge_time.hour
+max_event_minute = max_discharge_time.minute
+print(f"Max event time: {max_event_hour:02d}:{max_event_minute:02d}")
+
+# Look for data at exactly 16:30 on the same day as max event
+target_date = max_discharge_time.date()
+target_time_1630 = pd.Timestamp(f"{target_date} 16:30:00").tz_localize('Africa/Johannesburg')
+
+print(f"\nLooking for data at: {target_time_1630}")
+
+# Check if we have data at exactly 16:30
+if target_time_1630 in full_year_data.index:
+    data_at_1630 = full_year_data.loc[target_time_1630]
+    print(f"\n=== DATA AT 16:30 ===")
+    print(f"Battery Mode: {data_at_1630['Battery_Mode']}")
+    print(f"Battery Power: {data_at_1630['Battery_Power_kW']:.2f} kW")
+    print(f"Battery SOC: {data_at_1630['Battery_SOC_kWh']:.2f} kWh")
+    print(f"Grid Power: {data_at_1630['Grid_Power_KW']:.2f} kW")
+    print(f"PV Power: {data_at_1630['AC_Power_kW_osm_total']:.2f} kW")
+    print(f"Load Power: {data_at_1630['Home_Load_kW']:.2f} kW")
+else:
+    print(f"No data found at exact time: {target_time_1630}")
+    
+    # Find closest data point to 16:30
+    time_diff = abs(full_year_data.index - target_time_1630)
+    closest_idx = time_diff.argmin()
+    closest_time = full_year_data.index[closest_idx]
+    closest_data = full_year_data.iloc[closest_idx]
+    
+    print(f"\n=== CLOSEST DATA POINT TO 16:30 ===")
+    print(f"Closest time: {closest_time}")
+    print(f"Time difference: {abs(closest_time - target_time_1630).total_seconds()/60:.1f} minutes")
+    print(f"Battery Mode: {closest_data['Battery_Mode']}")
+    print(f"Battery Power: {closest_data['Battery_Power_kW']:.2f} kW")
+    print(f"Battery SOC: {closest_data['Battery_SOC_kWh']:.2f} kWh")
+    print(f"Grid Power: {closest_data['Grid_Power_KW']:.2f} kW")
+    print(f"PV Power: {closest_data['AC_Power_kW_osm_total']:.2f} kW")
+    print(f"Load Power: {closest_data['Home_Load_kW']:.2f} kW")
+
+# Also check all grid discharge events around 16:00-17:00 hours
+print(f"\n=== ALL GRID DISCHARGE EVENTS BETWEEN 16:00-17:00 ===")
+grid_discharge_16_17 = grid_discharge[(grid_discharge.index.hour == 16) | (grid_discharge.index.hour == 17)]
+
+if len(grid_discharge_16_17) > 0:
+    print(f"Found {len(grid_discharge_16_17)} grid discharge events between 16:00-17:00:")
+    for time, row in grid_discharge_16_17.iterrows():
+        print(f"  {time}: {abs(row['Battery_Power_kW']):.2f} kW, SOC: {row['Battery_SOC_kWh']:.1f} kWh")
+else:
+    print("No grid discharge events found between 16:00-17:00")
+
+# Analyze the hour surrounding the maximum event
+print(f"\n=== ANALYSIS OF HOUR SURROUNDING MAX EVENT ({max_discharge_time}) ===")
+hour_window = full_year_data[(full_year_data.index >= max_discharge_time - pd.Timedelta(minutes=30)) & 
+                            (full_year_data.index <= max_discharge_time + pd.Timedelta(minutes=30))]
+
+print(f"Data points in 1-hour window: {len(hour_window)}")
+print("\nDetailed breakdown:")
+for idx, row in hour_window.iterrows():
+    battery_power_abs = abs(row['Battery_Power_kW']) if row['Battery_Power_kW'] < 0 else row['Battery_Power_kW']
+    print(f"  {idx.strftime('%H:%M')}: Mode={row['Battery_Mode']:20s} | "
+          f"BattPower={row['Battery_Power_kW']:6.2f} kW | "
+          f"GridPower={row['Grid_Power_KW']:6.2f} kW | "
+          f"SOC={row['Battery_SOC_kWh']:5.1f} kWh")
+
+# Check if 16:30 falls within peak export hours
+print(f"\n=== PEAK EXPORT HOURS VERIFICATION ===")
+peak_hours = [14, 15, 16, 17, 18, 19, 20, 21]
+print(f"Peak export hours: {peak_hours}")
+print(f"16:30 is in peak hours: {16 in peak_hours}")
+
+# Check battery constraints at that time
+print(f"\n=== BATTERY CONSTRAINTS ===")
+print(f"Battery max discharge power: {battery_max_discharge_kw} kW")
+print(f"Battery max charge power: {battery_max_charge_kw} kW")
+print(f"Battery capacity: {battery_capacity_kwh} kWh")
+print(f"SOC min: {soc_min:.1f} kWh ({soc_min/battery_capacity_kwh*100:.1f}%)")
+print(f"SOC max: {soc_max:.1f} kWh ({soc_max/battery_capacity_kwh*100:.1f}%)")
 
