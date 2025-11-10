@@ -75,39 +75,6 @@ A high-resolution (5-minute) simulation of PV generation, battery dispatch, and 
 - PV power, load demand, SOC, grid exchange
 - Energy KPIs (PV, import, export, load, SCR)
 
-
-# PV-Battery-Grid Energy Management Simulator
-
-## Description
-A high-resolution (5-minute) Python simulation of **solar PV generation, battery dispatch** at a premises in durban, South Africa. 
-The model implements **dynamic load modeling, time-of-use strategies and strategic import/export control** to minimize grid dependency and maximize self-consumption.
-
-## Key Features
-- Multi-surface PV field modeling (tilt, azimuth, derating).
-- Realistic load profile with **day/night/peak patterns**.
-- Battery operation under SOC and power constraints.
-- **Strategic export control** between 18:00–21:00.
-- Performance KPIs: PV energy, import/export, SOC, SCR.
-- Publication-ready Garamond plots (PDF output).
-
-## Algorithm Overview
-1. **Input Data**: Import 5-min irradiance and weather CSV (2024).
-2. **PV Model**: Compute AOI, POA, temperature-corrected DC → AC power.
-3. **Load Modeling**: Dynamic + noise with min/max limits.
-4. **Battery Management**:
-   - Charge when PV > load.
-   - Discharge when PV < load.
-   - Strategic export during evening peak hours (6pm-9pm).
-5. **Grid Interaction**: Import/export according to SOC and thresholds.
-6. **Visualization**: Plot daily/weekly/yearly PV, load, SOC, and grid flow.
-
-
-## Outputs
-- PV power, load demand, SOC, grid exchange
-- Energy KPIs (PV, import, export, load, SCR)
-- 14 auto-saved plots: daily to yearly views
-- “Strategic hours” shaded visualization
-
 # 5-Minute High-Resolution Multi-Segment PV-Battery Self-Consumption & Grid Interaction Simulator
 
 This Python project simulates a **residential PV-battery system** with grid interaction, using high-resolution (5-minute) weather and load data. It calculates power flows, battery operation and grid import/export.
