@@ -1,0 +1,255 @@
+# === CREATE IEEE COLUMN-SIZED YEARLY PLOT WITH ORIGINAL STYLE ===
+def create_ieee_column_plot_original_style(data, filename='yearly_ieee_column'):
+    """Create IEEE column-sized plot with original style but only PV, Export, Import power and SoC"""
+    
+    # Set IEEE column size (3.5 inches wide) but maintain original styling
+    fig_width = 5.5  # IEEE single column width in inches
+    fig_height = 7.0  # Adjusted height for two subplots
+    
+    # Create figure with IEEE column dimensions but original styling
+    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(fig_width, fig_height))
+    fig.subplots_adjust(hspace=0.4)  # Maintain original spacing
+    
+    # Use original color scheme
+    colors = {
+        'pv': '#FF6B00',           # Bright orange for PV
+        'export': '#38761D',       # Green for export
+        'import': '#990000',       # Dark red for import
+        'soc': '#1F4E79',          # Navy blue for SOC
+        'export_fill': '#90EE90',  # Light green for export area
+        'import_fill': '#FFB6C1',  # Light red for import area
+    }
+    
+    # --- TOP PLOT: POWER FLOWS WITH AREA FILLS ---
+    
+    # Calculate consistent y-axis limits for power flows (only needed variables)
+    all_power_data = np.concatenate([
+        data["AC_Power_kW_osm_total"].values,
+        data['Grid_Power_KW'].clip(lower=0).values,
+        data['Grid_Power_KW'].clip(upper=0).abs().values
+    ])
+    
+    # Set consistent power y-axis limits with 10% margin
+    power_max = np.max(np.abs(all_power_data)) * 1.1
+    power_ylim = [-power_max, power_max]
+    
+    # Plot PV Power (maintain original linewidth and style)
+    ax1.plot(data.index, data["AC_Power_kW_osm_total"], 
+             label="PV Power", color=colors['pv'], linewidth=1.2)
+    
+    # Highlight Grid Export and Import with area fills (original style)
+    export_power = data['Grid_Power_KW'].clip(lower=0)
+    import_power = data['Grid_Power_KW'].clip(upper=0).abs()
+    
+    # Area fills for export and import (original alpha values)
+    ax1.fill_between(data.index, export_power, alpha=0.4, 
+                     color=colors['export_fill'], label='Export Area')
+    ax1.fill_between(data.index, -import_power, alpha=0.4, 
+                     color=colors['import_fill'], label='Import Area')
+    
+    # Line plots on top of area fills (original line styles)
+    ax1.plot(data.index, export_power, 
+             label="Export Power", color=colors['export'], linewidth=1.0, linestyle='--')
+    ax1.plot(data.index, -import_power, 
+             label="Import Power", color=colors['import'], linewidth=1.0, linestyle='--')
+    
+    # Zero line (original style)
+    ax1.axhline(0, color='black', linestyle='-', alpha=0.5, linewidth=0.8)
+    
+    # Set consistent power y-axis limits
+    ax1.set_ylim(power_ylim)
+    
+    # Maintain original font styling but adjust sizes for IEEE column
+    ax1.set_ylabel("Power [kW]", fontname='Garamond', fontsize=12, fontweight='bold')
+    ax1.grid(True, linestyle='--', alpha=0.3)
+    
+    # X-axis formatting for yearly plot
+    ax1.xaxis.set_major_locator(mdates.MonthLocator(interval=1))
+    ax1.xaxis.set_major_formatter(mdates.DateFormatter('%b'))
+    
+    # Maintain original label styling with adjusted sizes
+    plt.setp(ax1.xaxis.get_majorticklabels(), rotation=0, ha='center', 
+             fontname='Garamond', fontsize=10)
+    ax1.xaxis.set_major_locator(ticker.MaxNLocator(nbins=12))
+    
+    # Power legend - compact but maintain original styling
+    ax1.legend(loc='upper center', bbox_to_anchor=(0.5, -0.3), 
+               ncol=3, framealpha=0.9, fontsize=8, fancybox=True, shadow=True)
+    
+    # --- BOTTOM PLOT: BATTERY SOC WITH ORIGINAL STYLING ---
+    
+    # Plot Battery SOC (original linewidth)
+    ax2.plot(data.index, data["Battery_SOC_kWh"], 
+             label="Battery SOC", color=colors['soc'], linewidth=1.5)
+    
+    # SOC limits (original styling)
+    ax2.axhline(soc_max, color='red', linestyle='--', linewidth=1.2, alpha=0.8, label='Max SOC')
+    ax2.axhline(soc_min, color='red', linestyle='--', linewidth=1.2, alpha=0.8, label='Min SOC')
+    
+    # SOC plot formatting (original scale alignment)
+    soc_range = battery_capacity_kwh
+    soc_ylim = [0, soc_range * 1.05]
+    
+    ax2.set_ylim(soc_ylim)
+    
+    # Maintain original font styling but adjust sizes
+    ax2.set_ylabel("Battery SOC [kWh]", fontname='Garamond', fontsize=12, fontweight='bold')
+    ax2.set_xlabel("Time", fontname='Garamond', fontsize=12, fontweight='bold')
+    ax2.grid(True, linestyle='--', alpha=0.3)
+    
+    # X-axis formatting (same as top plot)
+    ax2.xaxis.set_major_locator(mdates.MonthLocator(interval=1))
+    ax2.xaxis.set_major_formatter(mdates.DateFormatter('%b'))
+    
+    plt.setp(ax2.xaxis.get_majorticklabels(), rotation=0, ha='center', 
+             fontname='Garamond', fontsize=10)
+    ax2.xaxis.set_major_locator(ticker.MaxNLocator(nbins=12))
+    
+    # SOC legend - compact but maintain original styling
+    ax2.legend(loc='upper center', bbox_to_anchor=(0.5, -0.3), 
+               ncol=3, framealpha=0.9, fontsize=8, fancybox=True, shadow=True)
+    
+    # Ensure both plots have the same x-axis limits
+    xlim = (data.index.min(), data.index.max())
+    ax1.set_xlim(xlim)
+    ax2.set_xlim(xlim)
+    
+    plt.tight_layout()
+    
+    # Save as PDF with high quality (original settings)
+    plt.savefig(f'{filename}.pdf', dpi=600, bbox_inches='tight', 
+                facecolor='white', edgecolor='none', format='pdf')
+    
+    # Also save as high-quality PNG for review
+    plt.savefig(f'{filename}.png', dpi=600, bbox_inches='tight', 
+                facecolor='white', edgecolor='none', format='png')
+    
+    return fig
+
+# === CREATE DAILY DETAIL PLOT WITH ORIGINAL STYLE ===
+def create_daily_ieee_column_plot(data, filename='daily_ieee_column'):
+    """Create IEEE column-sized daily plot with original style"""
+    
+    # Set IEEE column size
+    fig_width = 3.5
+    fig_height = 5.0
+    
+    # Create figure
+    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(fig_width, fig_height))
+    fig.subplots_adjust(hspace=0.4)
+    
+    # Use original color scheme
+    colors = {
+        'pv': '#FF6B00',           # Bright orange for PV
+        'export': '#38761D',       # Green for export
+        'import': '#990000',       # Dark red for import
+        'soc': '#1F4E79',          # Navy blue for SOC
+        'export_fill': '#90EE90',  # Light green for export area
+        'import_fill': '#FFB6C1',  # Light red for import area
+    }
+    
+    # --- TOP PLOT: POWER FLOWS ---
+    
+    # Plot PV Power
+    ax1.plot(data.index, data["AC_Power_kW_osm_total"], 
+             label="PV Power", color=colors['pv'], linewidth=1.2)
+    
+    # Highlight Grid Export and Import with area fills
+    export_power = data['Grid_Power_KW'].clip(lower=0)
+    import_power = data['Grid_Power_KW'].clip(upper=0).abs()
+    
+    ax1.fill_between(data.index, export_power, alpha=0.4, 
+                     color=colors['export_fill'], label='Export Area')
+    ax1.fill_between(data.index, -import_power, alpha=0.4, 
+                     color=colors['import_fill'], label='Import Area')
+    
+    # Line plots on top of area fills
+    ax1.plot(data.index, export_power, 
+             label="Export Power", color=colors['export'], linewidth=1.0, linestyle='--')
+    ax1.plot(data.index, -import_power, 
+             label="Import Power", color=colors['import'], linewidth=1.0, linestyle='--')
+    
+    ax1.axhline(0, color='black', linestyle='-', alpha=0.5, linewidth=0.8)
+    
+    # Calculate power limits for this specific day
+    day_power_max = max(data["AC_Power_kW_osm_total"].max(), 
+                       export_power.max(), 
+                       import_power.max()) * 1.1
+    ax1.set_ylim([-day_power_max, day_power_max])
+    
+    ax1.set_ylabel("Power [kW]", fontname='Garamond', fontsize=12, fontweight='bold')
+    ax1.grid(True, linestyle='--', alpha=0.3)
+    
+    # X-axis formatting for daily plot
+    ax1.xaxis.set_major_locator(mdates.HourLocator(interval=4))
+    ax1.xaxis.set_major_formatter(mdates.DateFormatter('%H:%M'))
+    
+    plt.setp(ax1.xaxis.get_majorticklabels(), rotation=0, ha='center', 
+             fontname='Garamond', fontsize=10)
+    
+    ax1.legend(loc='upper center', bbox_to_anchor=(0.5, -0.3), 
+               ncol=2, framealpha=0.9, fontsize=8, fancybox=True, shadow=True)
+    
+    # --- BOTTOM PLOT: BATTERY SOC ---
+    
+    ax2.plot(data.index, data["Battery_SOC_kWh"], 
+             label="Battery SOC", color=colors['soc'], linewidth=1.5)
+    
+    ax2.axhline(soc_max, color='red', linestyle='--', linewidth=1.2, alpha=0.8, label='Max SOC')
+    ax2.axhline(soc_min, color='red', linestyle='--', linewidth=1.2, alpha=0.8, label='Min SOC')
+    
+    ax2.set_ylim([0, battery_capacity_kwh * 1.05])
+    ax2.set_ylabel("Battery SOC [kWh]", fontname='Garamond', fontsize=12, fontweight='bold')
+    ax2.set_xlabel("Time", fontname='Garamond', fontsize=12, fontweight='bold')
+    ax2.grid(True, linestyle='--', alpha=0.3)
+    
+    # X-axis formatting
+    ax2.xaxis.set_major_locator(mdates.HourLocator(interval=4))
+    ax2.xaxis.set_major_formatter(mdates.DateFormatter('%H:%M'))
+    
+    plt.setp(ax2.xaxis.get_majorticklabels(), rotation=0, ha='center', 
+             fontname='Garamond', fontsize=10)
+    
+    ax2.legend(loc='upper center', bbox_to_anchor=(0.5, -0.3), 
+               ncol=2, framealpha=0.9, fontsize=8, fancybox=True, shadow=True)
+    
+    # Ensure both plots have the same x-axis limits
+    xlim = (data.index.min(), data.index.max())
+    ax1.set_xlim(xlim)
+    ax2.set_xlim(xlim)
+    
+    plt.tight_layout()
+    
+    # Save plots
+    plt.savefig(f'{filename}.pdf', dpi=600, bbox_inches='tight', 
+                facecolor='white', edgecolor='none', format='pdf')
+    plt.savefig(f'{filename}.png', dpi=600, bbox_inches='tight', 
+                facecolor='white', edgecolor='none', format='png')
+    
+    return fig
+
+# === GENERATE IEEE COLUMN PLOTS WITH ORIGINAL STYLE ===
+print("Generating IEEE column-sized plots with original style...")
+
+# Use yearly data
+yearly_data = df[(df.index >= '2024-01-01') & (df.index < '2025-01-01')]
+
+# Create the IEEE column yearly plot
+fig_yearly_ieee = create_ieee_column_plot_original_style(yearly_data, 'yearly_ieee_column')
+plt.show()
+
+# Create daily detailed plots for key periods
+daily_periods = [
+    ('2024-06-15', '2024-06-16', 'summer_day'),
+    ('2024-12-15', '2024-12-16', 'winter_day'),
+]
+
+for start_date, end_date, period_name in daily_periods:
+    daily_data = df[(df.index >= start_date) & (df.index < end_date)]
+    if len(daily_data) > 0:
+        fig_daily = create_daily_ieee_column_plot(daily_data, f'{period_name}_ieee_column')
+        plt.show()
+
+print("IEEE column-sized plots with original style generated successfully!")
+print("Files saved:")
+print("- yearly_ieee_column.pdf & .png")
