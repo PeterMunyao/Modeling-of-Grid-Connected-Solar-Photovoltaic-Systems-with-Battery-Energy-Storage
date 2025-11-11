@@ -1,4 +1,4 @@
-### 🕒 Manual Time Zone Conversion (SAST = UTC + 2 Hours)
+### 🕒 NB: Ensure Manual Time Zone Conversion of Solcast DNV data (SAST = UTC + 2 Hours)
 
 ### === LOAD WEATHER DATA - SHIFT CSV TIME BY +2 HOURS ===
 file_path = 'csv_-29.815268_30.946439_fixed_23_0_PT5M.csv'
