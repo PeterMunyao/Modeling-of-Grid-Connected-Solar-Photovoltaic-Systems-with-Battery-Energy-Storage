@@ -19,13 +19,27 @@ rcParams['legend.fontsize'] = 14
 rcParams['figure.figsize'] = [10, 8]  # Taller format for power + SOC
 
 # === LOAD AND PREPARE WEATHER DATA ===
-print("Loading weather data...")
+#file_path = 'csv_-29.815268_30.946439_fixed_23_0_PT5M.csv'
+#df = pd.read_csv(file_path)
+#df['period_end'] = pd.to_datetime(df['period_end'], utc=True)
+#df.set_index('period_end', inplace=True)
+#df = df[(df.index >= '2024-01-01') & (df.index < '2025-01-01')]
+#df.index = df.index.tz_convert('Africa/Johannesburg')
+
+
+
+# USE MANUAL TZ CONVERSION, THE ABOVE TZ IS NOT SHIFTING TIME AS EXPECTED SAST=UTC+2HRS
+# === LOAD WEATHER DATA - SHIFT CSV TIME BY +2 HOURS ===
 file_path = 'csv_-29.815268_30.946439_fixed_23_0_PT5M.csv'
 df = pd.read_csv(file_path)
-df['period_end'] = pd.to_datetime(df['period_end'], utc=True)
+df['period_end'] = pd.to_datetime(df['period_end'])  # Load with original timezone
 df.set_index('period_end', inplace=True)
 df = df[(df.index >= '2024-01-01') & (df.index < '2025-01-01')]
-df.index = df.index.tz_convert('Africa/Johannesburg')
+
+# Shift time by +2 hours
+df.index = df.index + pd.Timedelta(hours=2)
+
+
 
 # Ensure required columns exist
 required_columns = ['dni', 'ghi', 'dhi', 'air_temp', 'albedo', 'zenith', 'azimuth',
