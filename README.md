@@ -1,17 +1,17 @@
 ### 🕒 Manual Time Zone Conversion (SAST = UTC + 2 Hours)
 
-# === LOAD WEATHER DATA - SHIFT CSV TIME BY +2 HOURS ===
+### === LOAD WEATHER DATA - SHIFT CSV TIME BY +2 HOURS ===
 file_path = 'csv_-29.815268_30.946439_fixed_23_0_PT5M.csv'
 
-# Read CSV and parse datetime
+### Read CSV and parse datetime
 df = pd.read_csv(file_path)
 df['period_end'] = pd.to_datetime(df['period_end'])  # Original timezone
 df.set_index('period_end', inplace=True)
 
-# Apply manual timezone shift (SAST = UTC +2)
+### Apply manual timezone shift (SAST = UTC +2)
 df.index = df.index + pd.Timedelta(hours=2)
 
-# Optional: filter desired date range
+### Optional: filter desired date range
 df = df[(df.index >= '2024-01-01') & (df.index < '2025-01-01')]
 
 <p align="center">
