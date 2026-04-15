@@ -806,3 +806,111 @@ print("Files saved:")
 print("- yearly_ieee_column.pdf & .png")
 print("- winter_day_ieee_column.pdf & .png (June 15-16 - Southern Hemisphere Winter)") 
 print("- summer_day_ieee_column.pdf & .png (December 15-16 - Southern Hemisphere Summer)")
+
+#----------------------------------------------------------------------------------------
+
+# === PLOT FOR JANUARY 3RD AND 4TH ONLY ===
+jan_3_4_data = df[(df.index >= '2024-01-03') & (df.index < '2024-01-05')]
+
+# Create compact plot for Jan 3-4
+fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(9, 8))
+fig.subplots_adjust(hspace=0.25)  # Adjusted spacing between subplots
+
+# Define colors
+colors = {
+    'pv': '#FF6B00', 'load': '#C00000', 'battery_charge': '#0047AB',
+    'battery_discharge': '#1E90FF', 'export': '#38761D', 'import': '#990000',
+    'soc': '#1F4E79', 'export_fill': '#90EE90', 'import_fill': '#FFB6C1',
+}
+
+# TOP PLOT: POWER FLOWS
+# Set power y-axis limits with minimum negative power at -25kW
+power_ylim = [-25, 100]
+
+# Plot components
+ax1.plot(jan_3_4_data.index, jan_3_4_data["AC_Power_kW_osm_total"], 
+         label="PV Power", color=colors['pv'], linewidth=1.2)
+ax1.plot(jan_3_4_data.index, jan_3_4_data["Home_Load_kW"], 
+         label="Load Power", color=colors['load'], linewidth=1.2)
+
+# Battery power - USING CORRECT COLUMN NAME 'Battery_Power_kW_osm'
+battery_positive = jan_3_4_data['Battery_Power_kW_osm'].clip(lower=0)
+battery_negative = jan_3_4_data['Battery_Power_kW_osm'].clip(upper=0)
+ax1.plot(jan_3_4_data.index, battery_positive, 
+         label="Battery Charging", color=colors['battery_charge'], linewidth=1.2)
+ax1.plot(jan_3_4_data.index, battery_negative, 
+         label="Battery Discharging", color=colors['battery_discharge'], linewidth=1.2)
+
+# Grid power with area fills - USING CORRECT COLUMN NAME 'Grid_Power_KW_osm'
+export_power = jan_3_4_data['Grid_Power_KW_osm'].clip(lower=0)
+import_power = jan_3_4_data['Grid_Power_KW_osm'].clip(upper=0).abs()
+ax1.fill_between(jan_3_4_data.index, export_power, alpha=0.4, color=colors['export_fill'])
+ax1.fill_between(jan_3_4_data.index, -import_power, alpha=0.4, color=colors['import_fill'])
+ax1.plot(jan_3_4_data.index, export_power, label="Export", color=colors['export'], linewidth=1.0, linestyle='--')
+ax1.plot(jan_3_4_data.index, -import_power, label="Import", color=colors['import'], linewidth=1.0, linestyle='--')
+
+ax1.axhline(0, color='black', linestyle='-', alpha=0.5, linewidth=0.8)
+ax1.set_ylim(power_ylim)
+ax1.set_ylabel("Power [kW]", fontname='Garamond', fontsize=16, fontweight='bold')
+
+# Configure grids - major and minor grids every 4 hours
+ax1.grid(True, which='major', linestyle='-', alpha=0.3, linewidth=0.8)
+ax1.grid(True, which='minor', linestyle='--', alpha=0.2, linewidth=0.5)
+
+# X-axis formatting for 2-day period
+ax1.xaxis.set_major_locator(mdates.HourLocator(interval=4))
+ax1.xaxis.set_minor_locator(mdates.HourLocator(interval=2))  # Minor grids every 2 hours
+
+# Custom formatter for dates - simplified approach
+def custom_date_formatter(x, pos=None):
+    dt = mdates.num2date(x)
+    # Show date only at midnight, time at other hours
+    if dt.hour == 0:
+        return f"Jan/{dt.day:02d}\n00:00"
+    else:
+        return f"{dt.hour:02d}:00"
+
+ax1.xaxis.set_major_formatter(plt.FuncFormatter(custom_date_formatter))
+plt.setp(ax1.xaxis.get_majorticklabels(), rotation=0, ha='center', fontname='Garamond', fontsize=12)
+
+# Legend below the top plot - REDUCED ncol to 5 since we have 5 items
+ax1.legend(loc='upper center', bbox_to_anchor=(0.5, -0.2), 
+           ncol=5, framealpha=0.9, fontsize=11, fancybox=True, shadow=True,
+           columnspacing=0.8, handlelength=1.2)
+
+# BOTTOM PLOT: BATTERY SOC - USING CORRECT COLUMN NAME 'Battery_SOC_kWh_osm'
+ax2.plot(jan_3_4_data.index, jan_3_4_data["Battery_SOC_kWh_osm"], 
+         label="Battery SoC", color=colors['soc'], linewidth=1.5)
+ax2.axhline(soc_max, color='red', linestyle='--', linewidth=1.2, alpha=0.8, label='Max SoC')
+ax2.axhline(soc_min, color='red', linestyle='--', linewidth=1.2, alpha=0.8, label='Min SoC')
+
+ax2.set_ylim([0, battery_capacity_kwh * 1.05])
+ax2.set_ylabel("SoC [kWh]", fontname='Garamond', fontsize=16, fontweight='bold')
+ax2.set_xlabel("Time", fontname='Garamond', fontsize=16, fontweight='bold')
+
+# Configure grids - major and minor grids every 4 hours
+ax2.grid(True, which='major', linestyle='-', alpha=0.3, linewidth=0.8)
+ax2.grid(True, which='minor', linestyle='--', alpha=0.2, linewidth=0.5)
+
+# X-axis formatting (same as top plot)
+ax2.xaxis.set_major_locator(mdates.HourLocator(interval=4))
+ax2.xaxis.set_minor_locator(mdates.HourLocator(interval=2))  # Minor grids every 2 hours
+ax2.xaxis.set_major_formatter(plt.FuncFormatter(custom_date_formatter))
+plt.setp(ax2.xaxis.get_majorticklabels(), rotation=0, ha='center', fontname='Garamond', fontsize=12)
+
+# Legend below the bottom plot
+ax2.legend(loc='upper center', bbox_to_anchor=(0.5, -0.25), 
+           ncol=3, framealpha=0.9, fontsize=11, fancybox=True, shadow=True,
+           columnspacing=1.0, handlelength=1.5)
+
+# Set same x-axis limits for both plots
+xlim = (jan_3_4_data.index.min(), jan_3_4_data.index.max())
+ax1.set_xlim(xlim)
+ax2.set_xlim(xlim)
+
+plt.tight_layout()
+plt.savefig('january_3_4_compact.pdf', dpi=600, bbox_inches='tight', 
+            facecolor='white', edgecolor='none', format='pdf')
+plt.show()
+
+print("January 3-4 compact plot generated successfully!")
