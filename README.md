@@ -15,7 +15,7 @@ df.index = df.index + pd.Timedelta(hours=2)
 df = df[(df.index >= '2024-01-01') & (df.index < '2025-01-01')]
 
 <p align="center">
-  <img src="Schematic_Solar_PV_BESS_system.png" alt="Schematic of Solar PV and BESS system with energy management-Control logic unit" width="600"/>
+  <img src="bess.png" alt="Schematic of Solar PV and BESS system with energy management-Control logic unit" width="600"/>
   <br>
   <em>Figure 1: Schematic of Solar PV and BESS system with energy management-control logic unit.</em>
 </p>
